@@ -3,14 +3,10 @@ from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
 
+from config import *
+
 import json
 
-
-# Authentication information
-consumer_key = "JA6L1Wz94sVyAxt4i7c0ETSXk"
-consumer_secret = "kuP3nA4Aeqo6CWBhJkiAMjbOWi7Z9yU3zpDwhsKTw1s7HTrmO2"
-access_token = "3365047967-0HqvuP0fnd1qahNR220VmWLBU5zdVEge8VR42oQ"
-access_token_secret = "c6kcl9ib7O2OmoyCsXuf1L74Qd28QsNJav4QI0za4l4GQ"
 
 # Handles all the authentication
 auth = OAuthHandler(consumer_key, consumer_secret)
@@ -23,9 +19,12 @@ class StdOutListener(StreamListener):
 	def on_data(self, data):
 		api = tweepy.API(auth)
 
+		# Serialize the incoming data
 		tweet = json.loads(data)
 		tweet_id = tweet['id']
 
+		# Retweet
+		# This is a template, so any changes can be made 
 		api.retweet(id=tweet_id)
 
 		return True
@@ -35,7 +34,7 @@ class StdOutListener(StreamListener):
 		print(status)
 		return True
 
-    # This handles any timeout error
+	# This handles any timeout error
 	def on_timeout(self):
 		print('Timeout...')
 		return True 
